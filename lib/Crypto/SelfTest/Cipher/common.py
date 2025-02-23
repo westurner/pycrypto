@@ -24,7 +24,7 @@
 
 """Self-testing for PyCrypto hash modules"""
 
-from __future__ import nested_scopes
+
 
 __revision__ = "$Id$"
 
@@ -112,9 +112,9 @@ class CipherSelfTest(unittest.TestCase):
             from Crypto.Util import Counter
             ctr_class = _extract(params, 'ctr_class', Counter.new)
             ctr_params = _extract(params, 'ctr_params', {}).copy()
-            if ctr_params.has_key('prefix'): ctr_params['prefix'] = a2b_hex(b(ctr_params['prefix']))
-            if ctr_params.has_key('suffix'): ctr_params['suffix'] = a2b_hex(b(ctr_params['suffix']))
-            if not ctr_params.has_key('nbits'):
+            if 'prefix' in ctr_params: ctr_params['prefix'] = a2b_hex(b(ctr_params['prefix']))
+            if 'suffix' in ctr_params: ctr_params['suffix'] = a2b_hex(b(ctr_params['suffix']))
+            if 'nbits' not in ctr_params:
                 ctr_params['nbits'] = 8*(self.module.block_size - len(ctr_params.get('prefix', '')) - len(ctr_params.get('suffix', '')))
             params['counter'] = ctr_class(**ctr_params)
 
@@ -151,7 +151,7 @@ class CipherSelfTest(unittest.TestCase):
         # Repeat the same encryption or decryption twice and verify
         # that the result is always the same
         #
-        for i in xrange(2):
+        for i in range(2):
             cipher = self._new()
             decipher = self._new(1)
 
@@ -267,13 +267,13 @@ class CTRWraparoundTest(unittest.TestCase):
             self.assertRaises(OverflowError, cipher.encrypt, block)
 
             # Test PyObject_CallObject code path: counter object should raise OverflowError
-            ctr = Counter.new(8*self.module.block_size, initial_value=2L**(8*self.module.block_size)-1, little_endian=little_endian)
+            ctr = Counter.new(8*self.module.block_size, initial_value=2**(8*self.module.block_size)-1, little_endian=little_endian)
             ctr()
             self.assertRaises(OverflowError, ctr)
             self.assertRaises(OverflowError, ctr)
 
             # Test the CTR-mode shortcut
-            ctr = Counter.new(8*self.module.block_size, initial_value=2L**(8*self.module.block_size)-1, little_endian=little_endian)
+            ctr = Counter.new(8*self.module.block_size, initial_value=2**(8*self.module.block_size)-1, little_endian=little_endian)
             cipher = self.module.new(a2b_hex(self.key), self.module.MODE_CTR, counter=ctr)
             cipher.encrypt(block)
             self.assertRaises(OverflowError, cipher.encrypt, block)
@@ -478,7 +478,7 @@ class AEADTests(unittest.TestCase):
         if self.isMode("SIV"):
             return
 
-        ad = b("").join([bchr(x) for x in xrange(0,128)])
+        ad = b("").join([bchr(x) for x in range(0,128)])
 
         mac1, mac2, mac3 = (None,)*3
         for chunk_length in 1,10,40,80,128:
@@ -740,12 +740,12 @@ def make_block_tests(module, module_name, test_data, additional_params=dict()):
             tests.append(CipherStreamingSelfTest(module, params))
 
         # When using CTR mode, test the non-shortcut code path.
-        if p_mode == 'CTR' and not params.has_key('ctr_class'):
+        if p_mode == 'CTR' and 'ctr_class' not in params:
             params2 = params.copy()
             params2['description'] += " (shortcut disabled)"
             ctr_params2 = params.get('ctr_params', {}).copy()
             params2['ctr_params'] = ctr_params2
-            if not params2['ctr_params'].has_key('disable_shortcut'):
+            if 'disable_shortcut' not in params2['ctr_params']:
                 params2['ctr_params']['disable_shortcut'] = 1
             tests.append(CipherSelfTest(module, params2))
 

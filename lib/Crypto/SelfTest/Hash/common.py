@@ -58,11 +58,11 @@ class HashDigestSizeSelfTest(unittest.TestCase):
         return self.description
 
     def runTest(self):
-        self.failUnless(hasattr(self.hashmod, "digest_size"))
-        self.assertEquals(self.hashmod.digest_size, self.expected)
+        self.assertTrue(hasattr(self.hashmod, "digest_size"))
+        self.assertEqual(self.hashmod.digest_size, self.expected)
         h = self.hashmod.new()
-        self.failUnless(hasattr(h, "digest_size"))
-        self.assertEquals(h.digest_size, self.expected)
+        self.assertTrue(hasattr(h, "digest_size"))
+        self.assertEqual(h.digest_size, self.expected)
 
 
 class HashSelfTest(unittest.TestCase):
@@ -139,9 +139,9 @@ class HashDocStringTest(unittest.TestCase):
 
     def runTest(self):
         docstring = self.hashmod.__doc__
-        self.assert_(hasattr(self.hashmod, '__doc__'))
+        self.assertTrue(hasattr(self.hashmod, '__doc__'))
         if not docstrings_disabled():     # -OO makes docstrings disappear globally
-            self.assert_(isinstance(self.hashmod.__doc__, str))
+            self.assertTrue(isinstance(self.hashmod.__doc__, str))
 
 class GenericHashConstructorTest(unittest.TestCase):
     def __init__(self, hashmod):
@@ -155,12 +155,12 @@ class GenericHashConstructorTest(unittest.TestCase):
         obj4 = Crypto.Hash.new(obj1.name)
         obj5 = Crypto.Hash.new(obj1, "foo")
         obj6 = Crypto.Hash.new(obj1)
-        self.assert_(isinstance(self.hashmod, obj1))
-        self.assert_(isinstance(self.hashmod, obj2))
-        self.assert_(isinstance(self.hashmod, obj3))
-        self.assert_(isinstance(self.hashmod, obj4))
-        self.assert_(isinstance(self.hashmod, obj5))
-        self.assert_(isinstance(self.hashmod, obj6))
+        self.assertTrue(isinstance(self.hashmod, obj1))
+        self.assertTrue(isinstance(self.hashmod, obj2))
+        self.assertTrue(isinstance(self.hashmod, obj3))
+        self.assertTrue(isinstance(self.hashmod, obj4))
+        self.assertTrue(isinstance(self.hashmod, obj5))
+        self.assertTrue(isinstance(self.hashmod, obj6))
 
 class MACSelfTest(unittest.TestCase):
 
@@ -233,7 +233,7 @@ def make_hash_tests(module, module_name, test_data, digest_size, oid=None):
     tests = []
     for i in range(len(test_data)):
         row = test_data[i]
-        (expected, input) = map(b,row[0:2])
+        (expected, input) = list(map(b,row[0:2]))
         if len(row) < 3:
             description = repr(input)
         else:

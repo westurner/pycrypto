@@ -275,7 +275,7 @@ class _DSAobj(pubkey.pubkey):
             self._randfunc = Random.new().read
         t = []
         for k in self.keydata:
-            if not d.has_key(k):
+            if k not in d:
                 break
             t.append(d[k])
         self.key = self.implementation._math.dsa_construct(*tuple(t))
@@ -357,7 +357,7 @@ class _DSAobj(pubkey.pubkey):
                 else:
                     return x
 
-            tup2 = map(func, tup1)
+            tup2 = list(map(func, tup1))
             keyparts = [b('ssh-dss')] + tup2
             keystring = b('').join(
                             [struct.pack(">I", len(kp)) + kp for kp in keyparts]

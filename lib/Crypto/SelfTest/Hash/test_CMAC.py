@@ -27,7 +27,7 @@ if sys.version_info[0] == 2 and sys.version_info[1] == 1:
     from Crypto.Util.py21compat import *
 from Crypto.Util.py3compat import *
 
-from common import dict
+from .common import dict
 
 from Crypto.Hash import CMAC
 from Crypto.Cipher import AES, DES3
@@ -232,7 +232,7 @@ test_data = [
 
 def get_tests(config={}):
     global test_data
-    from common import make_mac_tests
+    from .common import make_mac_tests
 
     # Add new() parameters to the back of each test vector
     params_test_data = []

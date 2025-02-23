@@ -35,7 +35,7 @@ This algorithm is not considered secure. Do not use it for new designs.
 .. _SHA-1: http://csrc.nist.gov/publications/fips/fips180-2/fips180-2.pdf
 """
 
-from __future__ import nested_scopes
+
 
 _revision__ = "$Id$"
 

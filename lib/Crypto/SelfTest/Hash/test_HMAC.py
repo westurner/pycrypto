@@ -26,7 +26,7 @@
 
 __revision__ = "$Id$"
 
-from common import dict     # For compatibility with Python 2.1 and 2.2
+from .common import dict     # For compatibility with Python 2.1 and 2.2
 from Crypto.Util.py3compat import *
 
 from Crypto.Hash import MD5, SHA1, SHA224, SHA256, SHA384, SHA512, HMAC
@@ -205,7 +205,7 @@ test_data = [
 
 def get_tests(config={}):
     global test_data
-    from common import make_mac_tests
+    from .common import make_mac_tests
 
     # A test vector contains multiple results, each one for a
     # different hash algorithm.
@@ -213,7 +213,7 @@ def get_tests(config={}):
     # and add the relevant parameters that will be passed to new()
     exp_test_data = []
     for row in test_data:
-        for modname in row[2].keys():
+        for modname in list(row[2].keys()):
             t = list(row)
             t[2] = row[2][modname]
             try:

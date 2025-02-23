@@ -159,7 +159,7 @@ class PKCS1_15_Tests(unittest.TestCase):
                         if isStr(row[0]):
                                 key = RSA.importKey(row[0])
                         else:
-                                comps = [ long(rws(row[0][x]),16) for x in ('n','e','d') ]
+                                comps = [ int(rws(row[0][x]),16) for x in ('n','e','d') ]
                                 key = RSA.construct(comps)
                         h = row[3].new()
                         # Data to sign can either be in hex form or not
@@ -169,7 +169,7 @@ class PKCS1_15_Tests(unittest.TestCase):
                             h.update(b(row[1]))
                         # The real test
                         signer = PKCS.new(key)
-                        self.failUnless(signer.can_sign())
+                        self.assertTrue(signer.can_sign())
                         s = signer.sign(h)
                         self.assertEqual(s, t2b(row[2]))
 
@@ -180,7 +180,7 @@ class PKCS1_15_Tests(unittest.TestCase):
                         if isStr(row[0]):
                                 key = RSA.importKey(row[0]).publickey()
                         else:
-                                comps = [ long(rws(row[0][x]),16) for x in ('n','e') ]
+                                comps = [ int(rws(row[0][x]),16) for x in ('n','e') ]
                                 key = RSA.construct(comps)
                         h = row[3].new()
                         # Data to sign can either be in hex form or not
@@ -190,9 +190,9 @@ class PKCS1_15_Tests(unittest.TestCase):
                             h.update(b(row[1]))
                         # The real test
                         verifier = PKCS.new(key)
-                        self.failIf(verifier.can_sign())
+                        self.assertFalse(verifier.can_sign())
                         result = verifier.verify(h, t2b(row[2]))
-                        self.failUnless(result)
+                        self.assertTrue(result)
 
         def testSignVerify(self):
                         rng = Random.new().read
@@ -205,7 +205,7 @@ class PKCS1_15_Tests(unittest.TestCase):
                             signer = PKCS.new(key)
                             s = signer.sign(h)
                             result = signer.verify(h, s)
-                            self.failUnless(result)
+                            self.assertTrue(result)
 
 class PKCS1_15_NoParams(unittest.TestCase):
     """Verify that PKCS#1 v1.5 signatures pass even without NULL parameters in
@@ -232,7 +232,7 @@ class PKCS1_15_NoParams(unittest.TestCase):
         verifier = PKCS.new(RSA.importKey(self.rsakey))
         h = SHA1.new(self.msg)
         result = verifier.verify(h, t2b(self.signature))
-        self.failUnless(result)
+        self.assertTrue(result)
 
 def get_tests(config={}):
     tests = []

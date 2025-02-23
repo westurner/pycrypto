@@ -472,7 +472,7 @@ class BlockAlgo:
         """Create a new CTR cipher from the MAC in SIV mode"""
 
         tag_int = bytes_to_long(tag)
-        init_counter = tag_int ^ (tag_int & 0x8000000080000000L)
+        init_counter = tag_int ^ (tag_int & 0x8000000080000000)
         ctr = Counter.new(self._factory.block_size * 8,
                           initial_value=init_counter,
                           allow_wraparound=True)
@@ -497,7 +497,7 @@ class BlockAlgo:
         self._omac = [
                 CMAC.new(key, bchr(0) * (self.block_size - 1) + bchr(i),
                          ciphermod=factory)
-                for i in xrange(0, 3)
+                for i in range(0, 3)
                 ]
 
         # Compute MAC of nonce
@@ -603,7 +603,7 @@ class BlockAlgo:
         if self._assoc_len > 0:
             if self._assoc_len < (2 ** 16 - 2 ** 8):
                 enc_size = 2
-            elif self._assoc_len < (2L ** 32):
+            elif self._assoc_len < (2 ** 32):
                 assoc_len_encoded = b('\xFF\xFE')
                 enc_size = 4
             else:
@@ -915,7 +915,7 @@ class BlockAlgo:
 
         if self.mode == MODE_EAX:
             tag = bchr(0) * self.block_size
-            for i in xrange(3):
+            for i in range(3):
                 tag = strxor(tag, self._omac[i].digest())
             self._tag = tag[:self._mac_len]
 

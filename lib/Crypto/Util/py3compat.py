@@ -79,9 +79,9 @@ if sys.version_info[0] == 2:
         else:
             return ''.join(s)
     def tostr(bs):
-        return unicode(bs, 'latin-1')
+        return str(bs, 'latin-1')
     # In Pyton 2.x, StringIO is a stand-alone module
-    from StringIO import StringIO as BytesIO
+    from io import StringIO as BytesIO
 else:
     def b(s):
        return s.encode("latin-1") # utf-8 would cause some side-effects we don't want

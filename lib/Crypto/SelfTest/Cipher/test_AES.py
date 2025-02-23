@@ -30,7 +30,7 @@ import sys
 if sys.version_info[0] == 2 and sys.version_info[1] == 1:
     from Crypto.Util.py21compat import *
 from Crypto.Util.py3compat import *
-from common import dict     # For compatibility with Python 2.1 and 2.2
+from .common import dict     # For compatibility with Python 2.1 and 2.2
 from binascii import hexlify
 
 # This is a list of (plaintext, ciphertext, key[, description[, params]]) tuples.
@@ -1477,9 +1477,9 @@ test_data = [
       dict(mode='CCM', nonce='101112131415161718191a1b')
     ),
     (
-      (''.join(["%02X" % (x*16+y) for x in xrange(0,16) for y in xrange(0,16)]))*256+'|'+
+      (''.join(["%02X" % (x*16+y) for x in range(0,16) for y in range(0,16)]))*256+'|'+
       '202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f',
-      (''.join(["%02X" % (x*16+y) for x in xrange(0,16) for y in xrange(0,16)]))*256+'|'+
+      (''.join(["%02X" % (x*16+y) for x in range(0,16) for y in range(0,16)]))*256+'|'+
       '69915dad1e84c6376a68c2967e4dab615ae0fd1faec44cc484828529463ccf72|'+
       'b4ac6bec93e8598e7f0dadbcea5b',
       '404142434445464748494a4b4c4d4e4f',
@@ -1997,7 +1997,7 @@ test_data = [
 def get_tests(config={}):
     from Crypto.Cipher import AES
     from Crypto.Util import cpuid
-    from common import make_block_tests
+    from .common import make_block_tests
 
     tests = make_block_tests(AES, "AES", test_data, {'use_aesni': False})
     if cpuid.have_aes_ni():

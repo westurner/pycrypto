@@ -28,7 +28,7 @@ objects.
 
 """
 
-from __future__ import nested_scopes
+
 
 import sys
 
@@ -290,7 +290,7 @@ class DerInteger(DerObject):
                 DerObject._decodeFromStream(self, s)
 
                 # Derive self.value from self.payload
-                self.value = 0L
+                self.value = 0
                 bits = 1
                 for i in self.payload:
                     self.value *= 256
@@ -400,7 +400,7 @@ class DerSequence(DerObject):
                 """
                 def _isInt2(x):
                     return _isInt(x, onlyNonNegative)
-                return len(filter(_isInt2, self._seq))
+                return len(list(filter(_isInt2, self._seq)))
 
         def hasOnlyInts(self, onlyNonNegative=True):
                 """Return True if all items in this sequence are integers
@@ -595,7 +595,7 @@ class DerObjectId(DerObject):
         """Return the DER OBJECT ID, fully encoded as a
         binary string."""
 
-        comps = map(int,self.value.split("."))
+        comps = list(map(int,self.value.split(".")))
         if len(comps)<2:
             raise ValueError("Not a valid Object Identifier string")
         self.payload = bchr(40*comps[0]+comps[1])

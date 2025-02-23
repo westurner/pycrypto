@@ -34,12 +34,12 @@ import time
 import warnings
 
 from Crypto.pct_warnings import ClockRewindWarning
-import SHAd256
+from . import SHAd256
 
 # If the system has monotonic time, we'll use it.
 from Crypto.Util._time import maybe_monotonic_time
 
-import FortunaGenerator
+from . import FortunaGenerator
 
 class FortunaPool(object):
     """Fortuna pool type
@@ -92,7 +92,7 @@ def which_pools(r):
             retval.append(i)
         else:
             break   # optimization.  once this fails, it always fails
-        mask = (mask << 1) | 1L
+        mask = (mask << 1) | 1
     return retval
 
 class FortunaAccumulator(object):

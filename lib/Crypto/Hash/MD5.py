@@ -35,7 +35,7 @@ This algorithm is insecure. Do not use it for new designs.
 .. _RFC1321: http://tools.ietf.org/html/rfc1321 
 """
 
-from __future__ import nested_scopes
+
 
 _revision__ = "$Id$"
 

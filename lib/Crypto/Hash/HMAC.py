@@ -116,7 +116,7 @@ class HMAC:
             A hash module or object instantiated from `Crypto.Hash`
         """
         if digestmod is None:
-            import MD5
+            from . import MD5
             digestmod = MD5
 
         self.digestmod = digestmod
